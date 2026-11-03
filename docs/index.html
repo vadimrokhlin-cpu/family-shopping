@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#2e7d32">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<title>קניות</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <nav id="tabs"></nav>
+  <button id="menuBtn" aria-label="הגדרות">⋮</button>
+</header>
+<div id="status"></div>
+
+<main id="app">
+  <form id="addForm" autocomplete="off">
+    <input id="addInput" placeholder="הוסף מוצר..." enterkeyhint="done">
+    <button type="submit" aria-label="הוסף">+</button>
+  </form>
+  <ul id="suggest"></ul>
+  <ul id="open"></ul>
+  <p id="empty" hidden>הרשימה ריקה 🎉</p>
+  <details id="doneBox">
+    <summary id="doneTitle"></summary>
+    <ul id="done"></ul>
+  </details>
+</main>
+
+<section id="setup" hidden>
+  <h2>רשימת קניות משפחתית</h2>
+  <p>כדי להתחבר, פתח את הקישור המשפחתי שקיבלת בוואטסאפ.</p>
+</section>
+
+<dialog id="menu">
+  <h3>הגדרות</h3>
+  <button id="shareBtn">📤 שלח קישור לבן משפחה</button>
+  <button id="newListBtn">➕ רשימה חדשה</button>
+  <h4>ייבוא מ-Keep</h4>
+  <p class="hint">ב-Keep: ⋮ ← "העתקה ל-Google Docs", או סמן והעתק את הטקסט. הדבק כאן - שורה לכל מוצר.</p>
+  <textarea id="importText" rows="6"></textarea>
+  <button id="importBtn">ייבא לרשימה הנוכחית</button>
+  <button id="closeMenu" class="secondary">סגור</button>
+</dialog>
+
+<script src="app.js"></script>
+</body>
+</html>
