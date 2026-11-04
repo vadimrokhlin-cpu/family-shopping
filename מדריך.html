@@ -1,0 +1,645 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>רשימת קניות משפחתית - מדריך</title>
+<style>
+  :root { --g: #2e7d32; --g2: #e8f5e9; --line: #dfe3df; --muted: #666; }
+  body { margin: 0; background: #f4f6f4; color: #222; font: 17px/1.7 "Segoe UI", Arial, sans-serif; }
+  .wrap { max-width: 860px; margin: auto; padding: 24px 20px 80px; }
+  header { background: var(--g); color: #fff; padding: 28px 20px; }
+  header .wrap { padding: 0 20px; }
+  header h1 { margin: 0 0 6px; font-size: 30px; }
+  header p { margin: 0; opacity: .9; }
+  h2 { margin: 42px 0 12px; font-size: 24px; color: var(--g); border-bottom: 2px solid var(--g); padding-bottom: 4px; }
+  h3 { margin: 0 0 6px; font-size: 18px; }
+  .card { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 16px 20px; margin: 12px 0; }
+  .flow { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: center; direction: rtl; }
+  .flow span { background: #fff; border: 2px solid var(--g); border-radius: 10px; padding: 10px 14px; font-weight: 600; text-align: center; }
+  .flow b { color: var(--g); font-size: 22px; }
+  .step { display: flex; gap: 14px; }
+  .step input { width: 22px; height: 22px; margin-top: 4px; accent-color: var(--g); flex: none; }
+  .step.done { opacity: .5; }
+  .step > div { flex: 1; min-width: 0; }
+  .num { display: inline-block; background: var(--g); color: #fff; border-radius: 50%; width: 28px; height: 28px; text-align: center; line-height: 28px; font-size: 15px; margin-left: 8px; }
+  ul, ol { padding-right: 22px; margin: 6px 0; }
+  li { margin: 3px 0; }
+  .en { direction: ltr; unicode-bidi: isolate; font-family: Consolas, monospace; background: #f0f0f0; padding: 1px 6px; border-radius: 4px; font-size: 15px; }
+  .ui { font-weight: 600; background: var(--g2); padding: 1px 6px; border-radius: 4px; }
+  .note { background: #fff8e1; border-right: 4px solid #f9a825; padding: 10px 14px; border-radius: 6px; margin: 10px 0; }
+  .tip  { background: var(--g2); border-right: 4px solid var(--g); padding: 10px 14px; border-radius: 6px; margin: 10px 0; }
+  details { margin: 10px 0; }
+  summary { cursor: pointer; color: var(--g); font-weight: 600; }
+  pre { direction: ltr; text-align: left; background: #1e1e1e; color: #ddd; padding: 14px; border-radius: 8px; overflow: auto; max-height: 340px; font-size: 13px; line-height: 1.45; }
+  .copy { background: var(--g); color: #fff; border: 0; border-radius: 8px; padding: 8px 18px; font-size: 16px; cursor: pointer; margin: 6px 0; }
+  .copy.ok { background: #555; }
+  table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 10px; overflow: hidden; }
+  th, td { padding: 10px 12px; border-bottom: 1px solid var(--line); text-align: right; vertical-align: top; }
+  th { background: var(--g2); }
+  .dot { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-left: 6px; vertical-align: middle; }
+  .progress { position: sticky; top: 0; background: #fff; border-bottom: 1px solid var(--line); padding: 8px 20px; font-size: 15px; z-index: 5; }
+  .bar { height: 6px; background: #e0e0e0; border-radius: 3px; margin-top: 4px; }
+  .bar i { display: block; height: 100%; background: var(--g); border-radius: 3px; width: 0; transition: width .3s; }
+  @media print { .progress, .copy, pre { display: none; } }
+</style>
+</head>
+<body>
+
+<header><div class="wrap">
+  <h1>🛒 רשימת קניות משפחתית</h1>
+  <p>הסבר על המערכת, הוראות התקנה צעד אחר צעד, ושימוש יומיומי</p>
+</div></header>
+<div class="progress">התקדמות בהתקנה: <span id="pct">0</span> מתוך <span id="tot"></span> שלבים<div class="bar"><i id="barFill"></i></div></div>
+
+<div class="wrap">
+
+<h2>מה בנינו</h2>
+<div class="card">
+  <p>אפליקציה בטלפון שמחליפה את רשימת הקניות ב-Keep, ומחוברת ל-Instinct:</p>
+  <div class="flow">
+    <span>🎙️ Instinct</span><b>⇄</b>
+    <span>✅ Google Tasks<br><small>(בחשבון שלך)</small></span><b>⇄</b>
+    <span>📊 גיליון Google<br><small>(השרת)</small></span><b>⇄</b>
+    <span>📱 האפליקציה<br><small>(4 טלפונים)</small></span>
+  </div>
+  <ul style="margin-top:14px">
+    <li><b>Instinct ממשיכה לעבוד בדיוק כמו היום</b> - מול Google Tasks. לא צריך ללמד אותה שום דבר חדש.</li>
+    <li><b>כל רשימה באפליקציה = רשימה באותו שם ב-Google Tasks.</b> למשל "קניות", "פארם".</li>
+    <li><b>ב-Tasks נשאר רק מה שעוד צריך לקנות.</b> Instinct יכולה להקריא לך את הרשימה המלאה בכל רגע.</li>
+    <li><b>כל המשפחה רואה את אותה רשימה</b>, ושינוי של אחד מופיע אצל כולם.</li>
+    <li><b>בחנות - גם בלי אינטרנט:</b> מסמנים V, השינויים נשמרים בטלפון ונשלחים לבד כשחוזרת קליטה.</li>
+    <li><b>כמו ב-Keep:</b> מוצר שנקנה יורד ל"נקנו". כשמתחילים להקליד - הוא מוצע שוב, ולחיצה מחזירה אותו לרשימה.</li>
+    <li><b>עלות: אפס.</b> הכל רץ על החשבון הפרטי שלך ב-Google, והאפליקציה מתארחת בחינם ב-GitHub.</li>
+  </ul>
+</div>
+
+<h2>לפני שמתחילים</h2>
+<div class="card">
+  <ul>
+    <li>מחשב, דפדפן Chrome, <b>מחובר לחשבון ה-Gmail הפרטי</b> (לא לחשבון של העבודה).</li>
+    <li>זמן: כ-15-20 דקות.</li>
+    <li>את התיבות ☐ ליד כל שלב אפשר לסמן - המדריך זוכר איפה עצרת.</li>
+  </ul>
+</div>
+
+<h2>חלק 1: השרת (אתה, במחשב)</h2>
+
+<div class="card step"><input type="checkbox"><div>
+  <h3><span class="num">1</span>לבדוק באיזו רשימה Instinct משתמשת</h3>
+  <p>פתח את Google Tasks (בטלפון או ב-<span class="en">tasks.google.com</span>) ובדוק איך נקראת הרשימה שאליה Instinct מכניסה מוצרים.</p>
+  <ul>
+    <li>אם היא נקראת <span class="ui">קניות</span> - מצוין, ממשיכים.</li>
+    <li>אם היא נקראת אחרת (למשל <span class="en">My Tasks</span>) - צור ב-Tasks רשימה חדשה בשם <span class="ui">קניות</span>, ותגיד ל-Instinct: <i>"מעכשיו, מוצרים לקנייה תכניסי לרשימה 'קניות' ב-Google Tasks"</i>.</li>
+  </ul>
+  <div class="tip">המערכת מתחברת לרשימה הקיימת לפי השם, ומושכת ממנה את כל המוצרים הפתוחים. משימות ישנות שכבר סומנו כבוצעו - לא נוגעים בהן.</div>
+</div></div>
+
+<div class="card step"><input type="checkbox"><div>
+  <h3><span class="num">2</span>ליצור גיליון חדש</h3>
+  <ol>
+    <li>בשורת הכתובת של Chrome כתוב <span class="en">sheets.new</span> ולחץ Enter.</li>
+    <li>למעלה משמאל, במקום "גיליון אלקטרוני ללא שם", כתוב: <span class="ui">רשימת קניות משפחתית</span>.</li>
+  </ol>
+</div></div>
+
+<div class="card step"><input type="checkbox"><div>
+  <h3><span class="num">3</span>לפתוח את עורך הסקריפטים</h3>
+  <ol>
+    <li>בתפריט: <span class="ui">הרחבות</span> ← <span class="ui">Apps Script</span> <small>(באנגלית: Extensions ← Apps Script)</small>.</li>
+    <li>נפתחת לשונית חדשה. למעלה, במקום "פרויקט ללא שם", כתוב: <span class="ui">קניות משפחתי</span>.</li>
+    <li>בצד שמאל לחץ על גלגל השיניים ⚙ <span class="ui">הגדרות הפרויקט</span> (Project Settings).</li>
+    <li>סמן את התיבה <span class="ui">הצגת קובץ המניפסט appsscript.json בעורך</span> (Show "appsscript.json" manifest file in editor).</li>
+    <li>חזור לעורך: לחץ על הסמל <span class="en">&lt;&gt;</span> <span class="ui">עורך</span> (Editor) בצד שמאל.</li>
+  </ol>
+</div></div>
+
+<div class="card step"><input type="checkbox"><div>
+  <h3><span class="num">4</span>להדביק את קובץ ההגדרות</h3>
+  <ol>
+    <li>ברשימת הקבצים משמאל לחץ על <span class="en">appsscript.json</span>.</li>
+    <li>מחק את כל מה שכתוב שם (Ctrl+A ואז Delete).</li>
+    <li>לחץ על הכפתור כאן למטה, וחזור לעורך והדבק (Ctrl+V).</li>
+  </ol>
+  <button class="copy" data-src="manifest">📋 העתק את appsscript.json</button>
+  <details><summary>הצג את התוכן</summary><pre id="manifest">{
+  "timeZone": "Asia/Jerusalem",
+  "exceptionLogging": "STACKDRIVER",
+  "runtimeVersion": "V8",
+  "dependencies": {
+    "enabledAdvancedServices": [
+      { "userSymbol": "Tasks", "serviceId": "tasks", "version": "v1" }
+    ]
+  },
+  "webapp": {
+    "executeAs": "USER_DEPLOYING",
+    "access": "ANYONE_ANONYMOUS"
+  }
+}</pre></details>
+</div></div>
+
+<div class="card step"><input type="checkbox"><div>
+  <h3><span class="num">5</span>להדביק את הקוד</h3>
+  <ol>
+    <li>ברשימת הקבצים לחץ על <span class="en">Code.gs</span>.</li>
+    <li>מחק את כל מה שכתוב שם (Ctrl+A ואז Delete).</li>
+    <li>לחץ על הכפתור כאן, וחזור לעורך והדבק (Ctrl+V).</li>
+    <li>שמור: Ctrl+S (או סמל הדיסקט 💾 למעלה).</li>
+  </ol>
+  <button class="copy" data-src="code">📋 העתק את Code.gs</button>
+  <details><summary>הצג את הקוד</summary><pre id="code">// רשימת קניות משפחתית - צד שרת.
+// סקריפט צמוד לגיליון Google: הגיליון הוא מסד הנתונים, הסקריפט הוא ה-API של האפליקציה
+// וגם מסנכרן כל דקה מול Google Tasks (שם Instinct מוסיפה ומורידה מוצרים).
+// כל רשימה באפליקציה = רשימה באותו שם ב-Google Tasks. ב-Tasks נשארים רק מוצרים שעוד צריך לקנות.
+
+const ITEMS = 'Items', LISTS = 'Lists';
+const ICOLS = ['id', 'list', 'name', 'checked', 'updatedAt', 'taskId', 'dirty', 'deleted', 'count'];
+const LCOLS = ['name', 'tasklistId', 'createdAt'];
+const DEFAULT_LIST = 'קניות';
+
+// ---------- התקנה (מריצים פעם אחת מהעורך) ----------
+
+function setup() {
+  const ss = SpreadsheetApp.getActive();
+  ensureSheet_(ss, ITEMS, ICOLS);
+  ensureSheet_(ss, LISTS, LCOLS);
+  const props = PropertiesService.getScriptProperties();
+  if (!props.getProperty('FAMILY_KEY')) {
+    props.setProperty('FAMILY_KEY', Utilities.getUuid().replace(/-/g, '').slice(0, 20));
+  }
+  const db = load_();
+  if (!db.lists.length) db.lists.push({ name: DEFAULT_LIST, tasklistId: '', createdAt: Date.now() });
+  syncDb_(db);
+  save_(db);
+  ScriptApp.getProjectTriggers()
+    .filter(t =&gt; t.getHandlerFunction() === 'syncTasks')
+    .forEach(t =&gt; ScriptApp.deleteTrigger(t));
+  ScriptApp.newTrigger('syncTasks').timeBased().everyMinutes(1).create();
+  Logger.log('FAMILY_KEY = ' + props.getProperty('FAMILY_KEY'));
+}
+
+function ensureSheet_(ss, name, cols) {
+  const sh = ss.getSheetByName(name) || ss.insertSheet(name);
+  sh.getRange(1, 1, 1, cols.length).setValues([cols]).setFontWeight('bold');
+  sh.setFrozenRows(1);
+  sh.getRange('A:C').setNumberFormat('@');   // שמות מוצרים כטקסט, ש-"1/2" לא יהפוך לתאריך
+  sh.getRange('F:F').setNumberFormat('@');
+}
+
+// ---------- טריגר כל דקה ----------
+
+function syncTasks() {
+  const lock = LockService.getScriptLock();
+  if (!lock.tryLock(5000)) return;
+  try {
+    const db = load_();
+    syncDb_(db);
+    save_(db);
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+// ---------- API לאפליקציה ----------
+
+function doGet(e) { return handle_(e.parameter || {}, null); }
+
+function doPost(e) {
+  let body = {};
+  try { body = JSON.parse(e.postData.contents); } catch (x) {}
+  return handle_(e.parameter || {}, body);
+}
+
+function handle_(p, body) {
+  const key = (body &amp;&amp; body.key) || p.key;
+  if (!key || key !== PropertiesService.getScriptProperties().getProperty('FAMILY_KEY')) {
+    return json_({ error: 'unauthorized' });
+  }
+  const lock = LockService.getScriptLock();
+  lock.waitLock(25000);
+  try {
+    const db = load_();
+    const ops = (body &amp;&amp; body.ops) || [];
+    if (ops.length) applyOps_(db, ops);
+    if (ops.length || syncDue_()) {
+      try { syncDb_(db); } catch (x) { console.warn('sync failed: ' + x); }
+      save_(db);
+    }
+    return json_(state_(db));
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+function syncDue_() {
+  const last = PropertiesService.getScriptProperties().getProperty('LAST_SYNC');
+  return !last || Date.now() - new Date(last).getTime() &gt; 20000;
+}
+
+function state_(db) {
+  return {
+    lists: db.lists.slice().sort((a, b) =&gt; a.createdAt - b.createdAt).map(l =&gt; l.name),
+    items: db.items.filter(it =&gt; !truthy_(it.deleted)).map(it =&gt; ({
+      id: it.id, list: it.list, name: it.name, checked: truthy_(it.checked),
+      updatedAt: Number(it.updatedAt) || 0, count: Number(it.count) || 0
+    }))
+  };
+}
+
+// שינוי מהאפליקציה נדחה אם הפריט השתנה בשרת אחרי שהטלפון ראה אותו (base) - השרת מנצח.
+function applyOps_(db, ops) {
+  const byId = {};
+  db.items.forEach(it =&gt; byId[it.id] = it);
+  const now = Date.now();
+  ops.forEach(op =&gt; {
+    if (op.type === 'addList') {
+      const name = clean_(op.name);
+      if (name &amp;&amp; !db.lists.some(l =&gt; l.name === name)) {
+        db.lists.push({ name: name, tasklistId: '', createdAt: now });
+      }
+      return;
+    }
+    let it = byId[op.id];
+    if (!it &amp;&amp; op.type === 'upsert') {
+      // אותו מוצר נוסף משני טלפונים במקביל - מאחדים לפי שם
+      it = db.items.find(x =&gt; x.list === op.list &amp;&amp; norm_(x.name) === norm_(op.name) &amp;&amp; !truthy_(x.deleted));
+    } else if (it &amp;&amp; Number(op.base) &lt; Number(it.updatedAt)) {
+      return;
+    }
+    if (op.type === 'delete') {
+      if (it) { it.deleted = true; it.dirty = true; it.updatedAt = now; }
+      return;
+    }
+    const name = clean_(op.name);
+    if (!name) return;
+    if (!it) {
+      it = { id: op.id, list: op.list, name: name, checked: false, updatedAt: 0,
+             taskId: '', dirty: true, deleted: false, count: 0 };
+      db.items.push(it);
+      byId[it.id] = it;
+    }
+    if (op.checked &amp;&amp; !truthy_(it.checked)) it.count = (Number(it.count) || 0) + 1;
+    it.name = name;
+    it.checked = !!op.checked;
+    it.updatedAt = now;
+    it.dirty = true;
+  });
+}
+
+// ---------- סנכרון מול Google Tasks ----------
+
+function syncDb_(db) {
+  const props = PropertiesService.getScriptProperties();
+  const started = new Date();
+  const last = props.getProperty('LAST_SYNC');
+  const byTask = {};
+  db.items.forEach(it =&gt; { if (it.taskId) byTask[it.taskId] = it; });
+
+  // רשימה חדשה: מתחברים לרשימת Tasks באותו שם, ואם אין - יוצרים
+  let tasklists = null;
+  const fresh = {};
+  db.lists.forEach(l =&gt; {
+    if (l.tasklistId) return;
+    tasklists = tasklists || listAll_(tok =&gt; Tasks.Tasklists.list({ maxResults: 100, pageToken: tok }));
+    const found = tasklists.find(t =&gt; t.title === l.name);
+    l.tasklistId = found ? found.id : Tasks.Tasklists.insert({ title: l.name }).id;
+    fresh[l.name] = true;
+  });
+
+  // משיכה: מה השתנה ב-Tasks מאז הסנכרון הקודם (עם מרווח ביטחון של 2 דקות)
+  db.lists.forEach(l =&gt; {
+    const opts = { showCompleted: true, showHidden: true, showDeleted: true, maxResults: 100 };
+    if (last &amp;&amp; !fresh[l.name]) opts.updatedMin = new Date(new Date(last).getTime() - 120000).toISOString();
+    try {
+      listAll_(tok =&gt; Tasks.Tasks.list(l.tasklistId, Object.assign({ pageToken: tok }, opts)))
+        .forEach(t =&gt; pullTask_(db, l, t, byTask));
+    } catch (x) {
+      // הרשימה נמחקה ב-Tasks - בפעם הבאה תיווצר מחדש
+      if (String(x).indexOf('Not Found') &gt;= 0 || String(x).indexOf('404') &gt;= 0) l.tasklistId = '';
+      console.warn('pull ' + l.name + ': ' + x);
+    }
+  });
+
+  // דחיפה: שינויים מהאפליקציה
+  db.items.forEach(it =&gt; { if (truthy_(it.dirty)) pushItem_(db, it, byTask); });
+  db.items = db.items.filter(it =&gt; !(truthy_(it.deleted) &amp;&amp; !it.taskId &amp;&amp; !truthy_(it.dirty)));
+  props.setProperty('LAST_SYNC', started.toISOString());
+}
+
+function pullTask_(db, l, t, byTask) {
+  const it = byTask[t.id];
+  const tUpd = new Date(t.updated).getTime();
+  const gone = t.deleted || t.status === 'completed';
+
+  if (it) {
+    if (gone) {
+      // סומן כבוצע / נמחק ב-Tasks (למשל Instinct "תוריד חלב") = נקנה
+      if (!t.deleted) safeDelete_(l.tasklistId, t.id);
+      if (!truthy_(it.checked) &amp;&amp; !truthy_(it.deleted)) {
+        it.checked = true;
+        it.count = (Number(it.count) || 0) + 1;
+        it.updatedAt = Date.now();
+      }
+      it.taskId = '';
+      delete byTask[t.id];
+      return;
+    }
+    if (truthy_(it.checked) || truthy_(it.deleted)) {
+      if (Number(it.updatedAt) &gt;= tUpd) return;   // השינוי באפליקציה חדש יותר - הדחיפה תמחק את המשימה
+      it.checked = false;
+      it.deleted = false;
+      it.dirty = false;
+      it.updatedAt = Date.now();
+    }
+    const title = clean_(t.title);
+    if (title &amp;&amp; title !== it.name &amp;&amp; tUpd &gt; Number(it.updatedAt)) {
+      it.name = title;
+      it.updatedAt = Date.now();
+    }
+    return;
+  }
+
+  // משימה שאינה מקושרת. היסטוריה ישנה שבוצעה ב-Tasks - לא נוגעים.
+  if (gone) return;
+  const name = clean_(t.title);
+  if (!name) return;
+  let match = db.items.find(x =&gt; x.list === l.name &amp;&amp; norm_(x.name) === norm_(name) &amp;&amp; !truthy_(x.deleted));
+  if (match &amp;&amp; match.taskId &amp;&amp; match.taskId !== t.id) {
+    safeDelete_(l.tasklistId, t.id);   // המוצר כבר ברשימה - כפילות
+    return;
+  }
+  if (!match) {
+    match = { id: 't' + t.id, list: l.name, name: name, checked: false, updatedAt: 0,
+              taskId: '', dirty: false, deleted: false, count: 0 };
+    db.items.push(match);
+  }
+  match.checked = false;
+  match.deleted = false;
+  match.dirty = false;
+  match.taskId = t.id;
+  match.updatedAt = Date.now();
+  byTask[t.id] = match;
+}
+
+function pushItem_(db, it, byTask) {
+  const l = db.lists.find(x =&gt; x.name === it.list);
+  if (!l || !l.tasklistId) return;
+  try {
+    if (truthy_(it.deleted) || truthy_(it.checked)) {
+      if (it.taskId) {
+        safeDelete_(l.tasklistId, it.taskId);
+        delete byTask[it.taskId];
+        it.taskId = '';
+      }
+    } else if (!it.taskId) {
+      const t = Tasks.Tasks.insert({ title: it.name }, l.tasklistId);
+      it.taskId = t.id;
+      byTask[t.id] = it;
+    } else {
+      Tasks.Tasks.patch({ title: it.name }, l.tasklistId, it.taskId);
+    }
+    it.dirty = false;
+  } catch (x) {
+    // המשימה נמחקה בינתיים - ניצור אותה מחדש בסיבוב הבא
+    if (String(x).indexOf('Not Found') &gt;= 0 || String(x).indexOf('404') &gt;= 0) it.taskId = '';
+    console.warn('push ' + it.name + ': ' + x);
+  }
+}
+
+function safeDelete_(tasklistId, taskId) {
+  try { Tasks.Tasks.remove(tasklistId, taskId); } catch (x) {}
+}
+
+function listAll_(fetchPage) {
+  let out = [], tok;
+  do {
+    const res = fetchPage(tok);
+    out = out.concat(res.items || []);
+    tok = res.nextPageToken;
+  } while (tok);
+  return out;
+}
+
+// ---------- גיליון ----------
+
+function load_() {
+  const ss = SpreadsheetApp.getActive();
+  return {
+    items: readTable_(ss.getSheetByName(ITEMS), ICOLS),
+    lists: readTable_(ss.getSheetByName(LISTS), LCOLS)
+  };
+}
+
+function save_(db) {
+  writeTable_(ITEMS, ICOLS, db.items);
+  writeTable_(LISTS, LCOLS, db.lists);
+}
+
+function readTable_(sh, cols) {
+  const n = sh.getLastRow() - 1;
+  if (n &lt; 1) return [];
+  return sh.getRange(2, 1, n, cols.length).getValues().map(r =&gt; {
+    const o = {};
+    cols.forEach((c, i) =&gt; o[c] = r[i]);
+    return o;
+  });
+}
+
+function writeTable_(name, cols, rows) {
+  const sh = SpreadsheetApp.getActive().getSheetByName(name);
+  const old = sh.getLastRow() - 1;
+  if (old &gt; 0) sh.getRange(2, 1, old, cols.length).clearContent();
+  if (rows.length) {
+    sh.getRange(2, 1, rows.length, cols.length)
+      .setValues(rows.map(o =&gt; cols.map(c =&gt; o[c] === undefined || o[c] === null ? '' : o[c])));
+  }
+}
+
+// ---------- עזר ----------
+
+function json_(o) {
+  return ContentService.createTextOutput(JSON.stringify(o)).setMimeType(ContentService.MimeType.JSON);
+}
+function truthy_(v) { return v === true || v === 'TRUE' || v === 'true'; }
+function clean_(s) { return String(s || '').replace(/\s+/g, ' ').trim(); }
+function norm_(s) { return clean_(s).toLowerCase(); }</pre></details>
+</div></div>
+
+<div class="card step"><input type="checkbox"><div>
+  <h3><span class="num">6</span>להריץ את ההתקנה ולאשר הרשאות</h3>
+  <ol>
+    <li>בסרגל העליון של העורך יש תיבה עם שם פונקציה. בחר בה <span class="en">setup</span>.</li>
+    <li>לחץ <span class="ui">▷ הפעלה</span> (Run).</li>
+    <li>יופיע חלון "נדרשת הרשאה" ← <span class="ui">בדיקת ההרשאות</span> (Review permissions) ← בחר את החשבון הפרטי.</li>
+    <li>Google תזהיר: <i>"Google לא אימתה את האפליקציה הזו"</i>. זה תקין - זו אפליקציה שלך ולא של חברה. לחץ <span class="ui">מתקדם</span> (Advanced) ← <span class="ui">מעבר אל קניות משפחתי (לא בטוח)</span>.</li>
+    <li>סמן את כל ההרשאות (גיליונות, Tasks, הפעלה ברקע) ← <span class="ui">אישור</span> (Allow).</li>
+    <li>למטה ייפתח <span class="ui">יומן ביצוע</span> (Execution log). חכה ל-<span class="ui">הביצוע הסתיים</span>. תופיע שורה:
+      <pre style="max-height:none">FAMILY_KEY = 1a2b3c4d5e6f7a8b9c0d</pre>
+      <b>העתק את המפתח</b> (20 התווים) לפנקס הרשימות - תצטרך אותו בהמשך.</li>
+  </ol>
+  <div class="tip">ההתקנה יוצרת בגיליון שתי לשוניות (Items, Lists), מתחברת לרשימת "קניות" ב-Tasks, ומפעילה סנכרון אוטומטי כל דקה.</div>
+</div></div>
+
+<div class="card step"><input type="checkbox"><div>
+  <h3><span class="num">7</span>לפרסם את השרת</h3>
+  <ol>
+    <li>למעלה מימין: <span class="ui">פריסה</span> (Deploy) ← <span class="ui">פריסה חדשה</span> (New deployment).</li>
+    <li>ליד "בחירת סוג" לחץ על ⚙ ← <span class="ui">אפליקציית אינטרנט</span> (Web app).</li>
+    <li>מלא:
+      <table style="margin:8px 0">
+        <tr><th>שדה</th><th>מה לבחור</th></tr>
+        <tr><td>תיאור (Description)</td><td>גרסה 1</td></tr>
+        <tr><td>הפעלה בתור (Execute as)</td><td><b>אני</b> (Me) - החשבון הפרטי</td></tr>
+        <tr><td>למי יש גישה (Who has access)</td><td><b>כל אחד</b> (Anyone)</td></tr>
+      </table></li>
+    <li><span class="ui">פריסה</span> (Deploy). אם מבקש שוב הרשאה - לאשר כמו בשלב 6.</li>
+    <li>תופיע <span class="ui">כתובת URL של אפליקציית האינטרנט</span>. היא מתחילה ב-<span class="en">https://script.google.com/macros/s/</span> ומסתיימת ב-<span class="en">/exec</span>. <b>העתק אותה</b> לפנקס הרשימות.</li>
+  </ol>
+  <div class="note">"כל אחד" לא אומר שכל אחד רואה את הרשימה: בלי המפתח המשפחתי השרת לא מחזיר כלום. זה רק מאפשר לטלפונים של המשפחה להתחבר בלי להתחבר לחשבון שלך.</div>
+</div></div>
+
+<div class="card step"><input type="checkbox"><div>
+  <h3><span class="num">8</span>בדיקה קצרה</h3>
+  <p>בלשונית חדשה, הדבק את הכתובת מסוף שלב 7, הוסף בסופה <span class="en">?key=</span> ואת המפתח משלב 6, ולחץ Enter. לדוגמה:</p>
+  <pre style="max-height:none">https://script.google.com/macros/s/AKfy.../exec?key=1a2b3c4d5e6f7a8b9c0d</pre>
+  <ul>
+    <li>✅ תקין: מופיע טקסט שמתחיל ב-<span class="en">{"lists":["קניות"],"items":[</span> - עם המוצרים שכבר היו ב-Tasks.</li>
+    <li>❌ מופיע <span class="en">{"error":"unauthorized"}</span> - המפתח הועתק לא נכון.</li>
+  </ul>
+</div></div>
+
+<h2>חלק 2: העלאת האפליקציה (אני עושה)</h2>
+
+<div class="card step"><input type="checkbox"><div>
+  <h3><span class="num">9</span>לשלוח לי את הכתובת והמפתח</h3>
+  <p>בחלון של קלוד ב-VS Code הדבק לי: את הכתובת משלב 7 ואת המפתח משלב 6.</p>
+</div></div>
+
+<div class="card step"><input type="checkbox"><div>
+  <h3><span class="num">10</span>חיבור חד-פעמי ל-GitHub</h3>
+  <ol>
+    <li>בשורת הצ'אט עם קלוד כתוב בדיוק: <span class="en">! gh auth login</span></li>
+    <li>תענה על השאלות: <span class="en">GitHub.com</span> ← <span class="en">HTTPS</span> ← <span class="en">Yes</span> ← <span class="en">Login with a web browser</span>.</li>
+    <li>יופיע קוד בן 8 תווים. העתק אותו, לחץ Enter, ובדפדפן שנפתח הדבק אותו ואשר.</li>
+  </ol>
+  <p>מכאן אני ממשיך: יוצר את המאגר <span class="en">family-shopping</span>, מעלה את האפליקציה, מפעיל את האתר, ושולח לך <b>קישור משפחתי</b> מוכן.</p>
+  <div class="tip">המאגר יהיה ציבורי (זה התנאי לאירוח חינמי). יש בו רק קוד - בלי המפתח ובלי הרשימה שלכם.</div>
+</div></div>
+
+<h2>חלק 3: התקנה בטלפונים</h2>
+
+<div class="card step"><input type="checkbox"><div>
+  <h3><span class="num">11</span>אצלך בטלפון</h3>
+  <ol>
+    <li>פתח את הקישור המשפחתי <b>ב-Chrome</b> (אם הוא נפתח בתוך וואטסאפ - ⋮ ← "פתח ב-Chrome").</li>
+    <li>ב-Chrome: ⋮ ← <span class="ui">הוספה למסך הבית</span> או <span class="ui">התקנת אפליקציה</span> ← <span class="ui">התקנה</span>.</li>
+    <li>במסך הבית יופיע אייקון ירוק "קניות". מעכשיו פותחים רק דרכו.</li>
+  </ol>
+</div></div>
+
+<div class="card step"><input type="checkbox"><div>
+  <h3><span class="num">12</span>ייבוא הרשימה מ-Keep (פעם אחת)</h3>
+  <ol>
+    <li>ב-Keep פתח את רשימת הקניות ← ⋮ ← <span class="ui">העתקה ל-Google Docs</span>.</li>
+    <li>במסמך שנפתח: סמן הכל ← העתק.</li>
+    <li>באפליקציה החדשה: ⋮ (למעלה משמאל) ← הדבק בתיבה "ייבוא מ-Keep" ← <span class="ui">ייבא לרשימה הנוכחית</span>.</li>
+  </ol>
+  <div class="tip">אם כל המוצרים נכנסו כ"לקנות" (גם אלה שכבר מסומנים ב-Keep) - פשוט לחץ על מה שלא צריך עכשיו. הוא יירד ל"נקנו" ויישאר שם להשלמה אוטומטית.</div>
+</div></div>
+
+<div class="card step"><input type="checkbox"><div>
+  <h3><span class="num">13</span>לשלוח לבני המשפחה</h3>
+  <ol>
+    <li>באפליקציה: ⋮ ← <span class="ui">📤 שלח קישור לבן משפחה</span> ← וואטסאפ.</li>
+    <li>כל אחד פותח את הקישור ב-Chrome ומתקין, כמו בשלב 11.</li>
+  </ol>
+  <div class="note">הקישור הוא המפתח לרשימה. לשלוח רק לבני המשפחה, לא לקבוצות.</div>
+</div></div>
+
+<h2>שימוש יומיומי</h2>
+
+<table>
+  <tr><th>מה רוצים</th><th>באפליקציה</th><th>עם Instinct</th></tr>
+  <tr><td>להוסיף מוצר</td><td>מקלידים בשורה העליונה ← <b>+</b>. אם המוצר נקנה בעבר - הוא יוצע תוך כדי הקלדה</td><td>"תוסיפי חלב לרשימת קניות"</td></tr>
+  <tr><td>לסמן שנקנה</td><td>לחיצה על המוצר - הוא יורד ל"נקנו"</td><td>"תורידי לחם מרשימת קניות"</td></tr>
+  <tr><td>לראות את הרשימה</td><td>פותחים את האפליקציה</td><td>"מה יש ברשימת קניות?"</td></tr>
+  <tr><td>להחזיר מוצר שנקנה</td><td>פותחים "נקנו" למטה ולוחצים עליו, או מקלידים את שמו</td><td>"תוסיפי..." כרגיל</td></tr>
+  <tr><td>למחוק מוצר לגמרי</td><td>ב"נקנו" - לחיצה על ✕</td><td>-</td></tr>
+  <tr><td>רשימה חדשה (פארם, בית...)</td><td>⋮ ← <span class="ui">רשימה חדשה</span>. מופיעה גם ב-Tasks תוך דקה</td><td>"תוסיפי משחת שיניים לרשימת פארם"</td></tr>
+</table>
+
+<h3 style="margin-top:20px">הפס הצבעוני מתחת לכותרת</h3>
+<table>
+  <tr><td><span class="dot" style="background:#66bb6a"></span><b>מסונכרן</b></td><td>הכל מעודכן אצל כולם</td></tr>
+  <tr><td><span class="dot" style="background:#ef6c00"></span><b>אין אינטרנט</b></td><td>עובדים כרגיל. מספר השינויים שממתינים מופיע בפס, והם יישלחו לבד כשתחזור קליטה</td></tr>
+  <tr><td><span class="dot" style="background:#9e9e9e"></span><b>מתחבר...</b></td><td>רגע אחרי הפתיחה</td></tr>
+</table>
+
+<h3 style="margin-top:20px">זמנים</h3>
+<ul>
+  <li>שינוי באפליקציה ← אצל שאר המשפחה: עד ~15 שניות (כשהאפליקציה פתוחה אצלם).</li>
+  <li>שינוי באפליקציה ← Google Tasks / Instinct: מיד.</li>
+  <li>Instinct ← האפליקציה: עד דקה.</li>
+</ul>
+
+<h3 style="margin-top:20px">אם שני אנשים שינו את אותו מוצר</h3>
+<p>למשל: סימנת "חלב" בחנות בלי קליטה, ובינתיים מישהו אחר במשפחה הוסיף "חלב" מחדש. כשהקליטה חוזרת - <b>השינוי שלו נשאר</b> (החלב נשאר ברשימה), כי הוא נעשה אחרי שהטלפון שלך ראה את המוצר. זה בכוונה: עדיף לקנות פעמיים מאשר לשכוח.</p>
+
+<h2>אם משהו לא עובד</h2>
+<table>
+  <tr><th>מה קורה</th><th>מה לעשות</th></tr>
+  <tr><td>האפליקציה כתובה "פתח את הקישור המשפחתי"</td><td>היא נפתחה בלי הקישור. לפתוח שוב את הקישור מהוואטסאפ</td></tr>
+  <tr><td>מה ש-Instinct מוסיפה לא מגיע לאפליקציה</td><td>לוודא ש-Instinct כותבת לרשימה בשם המדויק ("קניות"). ב-Apps Script ← ⏰ טריגרים: צריך להופיע <span class="en">syncTasks</span> כל דקה</td></tr>
+  <tr><td>מגיע מייל מ-Google "Summary of failures"</td><td>תקלה זמנית של Google בסנכרון. אם זה קורה פעם ביום - להתעלם. אם הרבה - להעביר לי</td></tr>
+  <tr><td>הפס כתום כל הזמן למרות שיש אינטרנט</td><td>לסגור ולפתוח את האפליקציה. אם נשאר - להעביר לי צילום מסך</td></tr>
+</table>
+
+<h2>איפה הכל נמצא</h2>
+<div class="card">
+  <ul>
+    <li><b>הקוד:</b> <span class="en">C:\Users\Vadim\Projects\family-shopping</span> - מגובה כל ערב ל-NAS.</li>
+    <li><b>הנתונים:</b> הגיליון "רשימת קניות משפחתית" ב-Google Drive הפרטי. אפשר לפתוח ולראות, <b>לא לערוך ידנית</b>.</li>
+    <li><b>הרשימות הפתוחות:</b> Google Tasks בחשבון הפרטי.</li>
+  </ul>
+</div>
+
+<h2>בנוסף: מה השתנה ב-NAS הביתי</h2>
+<div class="card">
+  <ul>
+    <li>כל החומר על ה-NAS נמצא עכשיו ב-<span class="en">C:\Users\Vadim\Projects\home-nas</span>: דף הסבר (README.md) וקובץ הסיסמאות שלו (.env).</li>
+    <li>פרטי הכניסה ל-NAS הוצאו מקובץ הסיסמאות של העבודה.</li>
+    <li>הגיבוי היומי ב-21:00 מגבה עכשיו גם את כל תיקיית <span class="en">Projects</span> ל-NAS (בלי קבצי סיסמאות ובלי חבילות התקנה). נבדק - עובד.</li>
+  </ul>
+</div>
+
+</div>
+
+<script>
+  // תיבות הסימון: זוכר איפה עצרת
+  const boxes = [...document.querySelectorAll('.step input')];
+  const saved = JSON.parse(localStorage.getItem('fs-guide') || '[]');
+  document.getElementById('tot').textContent = boxes.length;
+  function upd() {
+    const n = boxes.filter(b => b.checked).length;
+    document.getElementById('pct').textContent = n;
+    document.getElementById('barFill').style.width = (100 * n / boxes.length) + '%';
+    boxes.forEach(b => b.closest('.step').classList.toggle('done', b.checked));
+    localStorage.setItem('fs-guide', JSON.stringify(boxes.map(b => b.checked)));
+  }
+  boxes.forEach((b, i) => { b.checked = !!saved[i]; b.onchange = upd; });
+  upd();
+
+  // כפתורי העתקה
+  document.querySelectorAll('.copy').forEach(btn => btn.onclick = async () => {
+    const text = document.getElementById(btn.dataset.src).textContent;
+    try { await navigator.clipboard.writeText(text); }
+    catch {
+      const t = document.createElement('textarea'); t.value = text; document.body.appendChild(t);
+      t.select(); document.execCommand('copy'); t.remove();
+    }
+    const old = btn.textContent; btn.textContent = '✓ הועתק - עכשיו הדבק בעורך'; btn.classList.add('ok');
+    setTimeout(() => { btn.textContent = old; btn.classList.remove('ok'); }, 3000);
+  });
+</script>
+</body>
+</html>
